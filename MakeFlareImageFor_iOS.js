@@ -91,7 +91,7 @@ window.MakeFlareImage = function () {
       img.onclick = function () {
         let link = document.createElement("a");
         link.href = img.src;
-        link.download = "screenshot.png";
+        link.download = "FlareList.png";
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
