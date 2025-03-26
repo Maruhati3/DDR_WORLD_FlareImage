@@ -20,7 +20,11 @@ window.MakeFlareImage = function () {
       JK.style = "border: solid 4px #bc26c1";
     } else if (Difficulties[0] == "DIFFICULT") {
       JK.style = "border: solid 4px #c2050b";
-    }
+    } else if (Difficulties[0] == "BASIC") {
+      JK.style = "border: solid 4px #ffde00";
+    } else if (Difficulties[0] == "BEGINNER") {
+      JK.style = "border: solid 4px #0fa7ff";
+    } 
     aSong.children[4].remove();
     aSong.firstElementChild.rowSpan = 2;
     aSong.firstElementChild.firstChild.parentNode.insertAdjacentHTML(
