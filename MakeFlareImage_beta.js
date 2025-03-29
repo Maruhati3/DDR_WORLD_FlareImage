@@ -500,32 +500,57 @@ window.MakeFlareImage = function () {
   loader.style.top = "50%";
   loader.style.left = "50%";
   loader.style.transform = "translate(-50%, -50%)";
-  loader.style.fontSize = "20px";
+  loader.style.fontSize = "50px";
   document.body.appendChild(loader);
   let script = document.createElement("script");
   script.src =
     "https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js";
+  // script.onload = () => {
+  //   html2canvas(document.querySelector(".main")).then((canvas) => {
+  //     topElement = document.querySelector("#top");
+  //     while (topElement.firstChild) {
+  //       topElement.removeChild(topElement.firstChild);
+  //     }
+  //     let img = document.createElement("img");
+  //     img.src = canvas.toDataURL("image/png");
+  //     img.style.width = "100%";
+  //     img.style.cursor = "pointer";
+  //     img.onclick = function () {
+  //       let link = document.createElement("a");
+  //       link.href = img.src;
+  //       link.download = "FlareList.png";
+  //       document.body.appendChild(link);
+  //       link.click();
+  //       document.body.removeChild(link);
+  //     };
+  //     topElement.appendChild(img);
+  //     document.getElementById("loader").remove();
+  //   });
+  // };
   script.onload = () => {
-    html2canvas(document.querySelector(".main")).then((canvas) => {
-      topElement = document.querySelector("#top");
-      while (topElement.firstChild) {
-        topElement.removeChild(topElement.firstChild);
-      }
-      let img = document.createElement("img");
-      img.src = canvas.toDataURL("image/png");
-      img.style.width = "100%";
-      img.style.cursor = "pointer";
-      img.onclick = function () {
-        let link = document.createElement("a");
-        link.href = img.src;
-        link.download = "FlareList.png";
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-      };
-      topElement.appendChild(img);
-      document.getElementById("loader").remove();
-    });
+    // 一定時間待機してから画像化処理を実行
+    setTimeout(() => {
+      html2canvas(document.querySelector(".main")).then((canvas) => {
+        let topElement = document.querySelector("#top");
+        while (topElement.firstChild) {
+          topElement.removeChild(topElement.firstChild);
+        }
+        let img = document.createElement("img");
+        img.src = canvas.toDataURL("image/png");
+        img.style.width = "100%";
+        img.style.cursor = "pointer";
+        img.onclick = function () {
+          let link = document.createElement("a");
+          link.href = img.src;
+          link.download = "FlareList.png";
+          document.body.appendChild(link);
+          link.click();
+          document.body.removeChild(link);
+        };
+        topElement.appendChild(img);
+        document.getElementById("loader").remove();
+      });
+    }, 1000); // 1秒待機（必要に応じて調整可能）
   };
   document.body.appendChild(script);
 };
