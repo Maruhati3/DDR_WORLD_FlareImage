@@ -259,7 +259,7 @@ window.MakeFlareImage = function () {
   colori = 0; //2列目用変数
 
   //debug用にレート値を変化させるゾーン----------------------------------------------------
-  TotalFlare2 = "74999";
+  //TotalFlare2 = "74999";
   // console.debug(TotalFlare2);
   for (var i = 0; i < TotalColorNum.length; i++) {
     if (parseInt(TotalFlare2) >= parseInt(TotalColorNum[i])) {
@@ -289,7 +289,7 @@ window.MakeFlareImage = function () {
   document.querySelector("#PDC1C2").appendChild(PDC1C2C1);
   document.querySelector("#PDC1C2").appendChild(PDC1C2C2);
   // PDC1C2.innerHTML = TotalFlare1 + TotalFlare2;
-  console.log("一列目終了");
+  //console.log("一列目終了");
   //2列目------------------------------------
   let PlayerDataChild2 = document.createElement("div");
   PlayerDataChild2.id = "PlayerData2";
@@ -332,8 +332,8 @@ window.MakeFlareImage = function () {
   // 二行目の文字列
   chartname2 = "+".repeat(parseInt((40 - colori) % 4));
 
-  console.debug(percentage);
-  console.debug(backgroundColor);
+  // console.debug(percentage);
+  // console.debug(backgroundColor);
 
   // Chart.jsのスクリプトを動的に読み込んでから実行
   let chartScript = document.createElement("script");
@@ -500,32 +500,57 @@ window.MakeFlareImage = function () {
   loader.style.top = "50%";
   loader.style.left = "50%";
   loader.style.transform = "translate(-50%, -50%)";
-  loader.style.fontSize = "20px";
+  loader.style.fontSize = "50px";
   document.body.appendChild(loader);
   let script = document.createElement("script");
   script.src =
     "https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js";
+  // script.onload = () => {
+  //   html2canvas(document.querySelector(".main")).then((canvas) => {
+  //     topElement = document.querySelector("#top");
+  //     while (topElement.firstChild) {
+  //       topElement.removeChild(topElement.firstChild);
+  //     }
+  //     let img = document.createElement("img");
+  //     img.src = canvas.toDataURL("image/png");
+  //     img.style.width = "100%";
+  //     img.style.cursor = "pointer";
+  //     img.onclick = function () {
+  //       let link = document.createElement("a");
+  //       link.href = img.src;
+  //       link.download = "FlareList.png";
+  //       document.body.appendChild(link);
+  //       link.click();
+  //       document.body.removeChild(link);
+  //     };
+  //     topElement.appendChild(img);
+  //     document.getElementById("loader").remove();
+  //   });
+  // };
   script.onload = () => {
-    html2canvas(document.querySelector(".main")).then((canvas) => {
-      topElement = document.querySelector("#top");
-      while (topElement.firstChild) {
-        topElement.removeChild(topElement.firstChild);
-      }
-      let img = document.createElement("img");
-      img.src = canvas.toDataURL("image/png");
-      img.style.width = "100%";
-      img.style.cursor = "pointer";
-      img.onclick = function () {
-        let link = document.createElement("a");
-        link.href = img.src;
-        link.download = "FlareList.png";
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-      };
-      topElement.appendChild(img);
-      document.getElementById("loader").remove();
-    });
+    // 一定時間待機してから画像化処理を実行
+    setTimeout(() => {
+      html2canvas(document.querySelector(".main")).then((canvas) => {
+        let topElement = document.querySelector("#top");
+        while (topElement.firstChild) {
+          topElement.removeChild(topElement.firstChild);
+        }
+        let img = document.createElement("img");
+        img.src = canvas.toDataURL("image/png");
+        img.style.width = "100%";
+        img.style.cursor = "pointer";
+        img.onclick = function () {
+          let link = document.createElement("a");
+          link.href = img.src;
+          link.download = "FlareList.png";
+          document.body.appendChild(link);
+          link.click();
+          document.body.removeChild(link);
+        };
+        topElement.appendChild(img);
+        document.getElementById("loader").remove();
+      });
+    }, 1000); // 1秒待機（必要に応じて調整可能）
   };
   document.body.appendChild(script);
 };
