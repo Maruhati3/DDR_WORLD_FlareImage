@@ -259,7 +259,7 @@ window.MakeFlareImage = function () {
   colori = 0; //2列目用変数
 
   //debug用にレート値を変化させるゾーン----------------------------------------------------
-  TotalFlare2 = "74999";
+  //TotalFlare2 = "74999";
   // console.debug(TotalFlare2);
   for (var i = 0; i < TotalColorNum.length; i++) {
     if (parseInt(TotalFlare2) >= parseInt(TotalColorNum[i])) {
@@ -289,7 +289,7 @@ window.MakeFlareImage = function () {
   document.querySelector("#PDC1C2").appendChild(PDC1C2C1);
   document.querySelector("#PDC1C2").appendChild(PDC1C2C2);
   // PDC1C2.innerHTML = TotalFlare1 + TotalFlare2;
-  console.log("一列目終了");
+  //console.log("一列目終了");
   //2列目------------------------------------
   let PlayerDataChild2 = document.createElement("div");
   PlayerDataChild2.id = "PlayerData2";
@@ -332,8 +332,8 @@ window.MakeFlareImage = function () {
   // 二行目の文字列
   chartname2 = "+".repeat(parseInt((40 - colori) % 4));
 
-  console.debug(percentage);
-  console.debug(backgroundColor);
+  // console.debug(percentage);
+  // console.debug(backgroundColor);
 
   // Chart.jsのスクリプトを動的に読み込んでから実行
   let chartScript = document.createElement("script");
