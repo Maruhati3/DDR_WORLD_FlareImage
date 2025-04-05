@@ -64,17 +64,13 @@ window.MakeFlareImage = function () {
   var sumC = 0;
   var sumW = 0;
   var sumG = 0;
-  var counter = 0;
   document.querySelectorAll(".data").forEach((aSong) => {
-    if (counter < 30) {
+    if (aSong.classList[1] == "flareskill_classic_table") {
       sumC += parseInt(aSong.children[3].textContent);
-      counter += 1;
-    } else if (counter < 60) {
+    } else if (aSong.classList[1] == "flareskill_white_table") {
       sumW += parseInt(aSong.children[3].textContent);
-      counter += 1;
     } else {
       sumG += parseInt(aSong.children[3].textContent);
-      counter += 1;
     }
 
     Difficulties = aSong.children[1].textContent.split(".");
@@ -103,8 +99,8 @@ window.MakeFlareImage = function () {
     aSong.firstElementChild.firstChild.parentNode.insertAdjacentHTML(
       "afterend",
       '<td colspan="3" width="calc(100%-58px)">' +
-        aSong.firstElementChild.children[1].outerHTML +
-        "</td>"
+      aSong.firstElementChild.children[1].outerHTML +
+      "</td>"
     );
     aSong.firstElementChild.children[1].remove();
     aSong.children[1].style =
@@ -132,6 +128,7 @@ window.MakeFlareImage = function () {
   document.querySelectorAll(".graph_title").forEach((tbl) => {
     tbl.style.width = "calc(31.5%)";
   });
+  //余計な要素の処理
   document.querySelector(".style-tab").remove();
   document.querySelector(".game_inner").style = "display:flex;flex-wrap:wrap;";
   document.querySelector(".game_inner").children[0].remove();
@@ -147,24 +144,73 @@ window.MakeFlareImage = function () {
   Pname2 = document.querySelectorAll(".name_str")[1].innerHTML;
   TotalFlare1 = '<span style="font-size:30px">Total Flare Skill &nbsp;</span>';
   TotalFlare2 = parseInt(sumC) + parseInt(sumW) + parseInt(sumG);
+  //曲数が満たない場合に空欄埋めるゾーン
+  maxindex = Math.max(
+    document.querySelectorAll(".data.flareskill_classic_table").length,
+    document.querySelectorAll(".data.flareskill_white_table").length,
+    document.querySelectorAll(".data.flareskill_gold_table").length
+  );
+  if (maxindex != document.querySelectorAll(".data.flareskill_classic_table").length) {
+    document.querySelectorAll("#data_tbl")[0].innerHTML =
+      document.querySelectorAll("#data_tbl")[0].innerHTML +
+      '<tr style="height: calc(67.8px*' +
+      parseInt(
+        maxindex -
+        document.querySelectorAll(".data.flareskill_classic_table").length
+      ) +
+      ');"></tr>';
+  }
+  if (maxindex != document.querySelectorAll(".data.flareskill_white_table").length) {
+    document.querySelectorAll("#data_tbl")[1].innerHTML =
+      document.querySelectorAll("#data_tbl")[1].innerHTML +
+      '<tr style="height: calc(67.8px*' +
+      parseInt(
+        maxindex -
+        document.querySelectorAll(".data.flareskill_white_table").length
+      ) +
+      ');"></tr>';
+  }
+  if (maxindex != document.querySelectorAll(".data.flareskill_gold_table").length) {
+    document.querySelectorAll("#data_tbl")[2].innerHTML =
+      document.querySelectorAll("#data_tbl")[2].innerHTML +
+      '<tr style="height: calc(67.8px*' +
+      parseInt(
+        maxindex -
+        document.querySelectorAll(".data.flareskill_gold_table").length
+      ) +
+      ');"></tr>';
+  }
   //Classic White Goldのテキスト生成
   // sumC=     ("Classic&nbsp;Sum: " +sumC+"&nbsp;&nbsp;Classic average : "+(sumC/30).toPrecision(4));
   // sumW=     ("White&nbsp;&nbsp;&nbsp;Sum: "     +sumW  +"&nbsp;&nbsp;White&nbsp;&nbsp;&nbsp;average : "+(sumW/30).toPrecision(4));
   // sumG=     ("Gold&nbsp;&nbsp;&nbsp;&nbsp;Sum: "+sumG +"&nbsp;&nbsp;Gold&nbsp;&nbsp;&nbsp;&nbsp;average : "+(sumG/30).toPrecision(4));
   sumC =
-    "Classic&nbsp;: " + sumC + "&nbsp;(" + (sumC / 30).toPrecision(4) + ")";
+    "Classic&nbsp;: " +
+    sumC +
+    "&nbsp;(" +
+    (
+      sumC / document.querySelectorAll(".data.flareskill_classic_table").length
+    ).toPrecision(4) +
+    ")";
   sumW =
     "White&nbsp;&nbsp;&nbsp;: " +
     sumW +
     "&nbsp;(" +
-    (sumW / 30).toPrecision(4) +
+    (
+      sumW / document.querySelectorAll(".data.flareskill_white_table").length
+    ).toPrecision(4) +
     ")";
   sumG =
     "Gold&nbsp;&nbsp;&nbsp;&nbsp;: " +
     sumG +
     "&nbsp;(" +
-    (sumG / 30).toPrecision(4) +
+    (
+      sumG / document.querySelectorAll(".data.flareskill_gold_table").length
+    ).toPrecision(4) +
     ")";
+
+  //上部分-------------------------------------------------------------------------------------------------------------------------------------------
+
   let PlayerData = document.createElement("div");
   PlayerData.id = "PlayerData";
   PlayerData.style =
@@ -298,10 +344,8 @@ window.MakeFlareImage = function () {
   document.querySelector("#PlayerData").appendChild(PlayerDataChild2);
   let PlayerDataChild2_1 = document.createElement("div");
   PlayerDataChild2_1.id = "PlayerData2_1";
-  PlayerDataChild2_1.style =
-    "width:160px;height:160px;position: relative;";
+  PlayerDataChild2_1.style = "width:160px;height:160px;position: relative;";
   document.querySelector("#PlayerData2").appendChild(PlayerDataChild2_1);
-  
 
   //ドーナツ型のチャート作成部分
   //埋め込み用キャンバスを生成
@@ -309,7 +353,8 @@ window.MakeFlareImage = function () {
   FlareCanvas.id = "doughnutChart";
   FlareCanvas.width = 160;
   FlareCanvas.height = 160;
-  FlareCanvas.style="position: absolute;left: 0;  top: 0;  width: 100%;  height: 100%;";
+  FlareCanvas.style =
+    "position: absolute;left: 0;  top: 0;  width: 100%;  height: 100%;";
   document.querySelector("#PlayerData2_1").appendChild(FlareCanvas);
   //グラフ用パラメータを設定---------------
   if (colori == 0) {
