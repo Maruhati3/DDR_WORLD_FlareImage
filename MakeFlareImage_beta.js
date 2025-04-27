@@ -545,7 +545,7 @@ window.MakeFlareImage = function () {
   loader.style.top = "50%";
   loader.style.left = "50%";
   loader.style.transform = "translate(-50%, -50%)";
-  loader.style.fontSize = "50px";
+  loader.style.fontSize = "40px";
   document.body.appendChild(loader);
   let script = document.createElement("script");
   script.src =
