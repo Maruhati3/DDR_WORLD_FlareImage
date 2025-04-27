@@ -142,7 +142,7 @@ window.MakeFlareImage = function () {
 
   Pname1 = '<span style="font-size:30px">Dancer Name&nbsp;</span>';
   Pname2 = document.querySelectorAll(".name_str")[1].innerHTML;
-  TotalFlare1 = '<span style="font-size:30px">Total Flare Skill &nbsp;</span>';
+  TotalFlare1 = '<span style="font-size:30px">Total Flare Skill</span>';
   TotalFlare2 = parseInt(sumC) + parseInt(sumW) + parseInt(sumG);
   //曲数が満たない場合に空欄埋めるゾーン
   maxindex = Math.max(
@@ -222,7 +222,7 @@ window.MakeFlareImage = function () {
   //1列目
   let PlayerDataChild1 = document.createElement("div");
   PlayerDataChild1.id = "PlayerData1";
-  PlayerDataChild1.style = "width:35%;height:100%;font-size:50px;";
+  PlayerDataChild1.style = "width:40%;height:100%;font-size:50px;";
   document.querySelector("#PlayerData").appendChild(PlayerDataChild1);
   //上段の構成
   let PDC1C1 = document.createElement("div");
@@ -250,13 +250,13 @@ window.MakeFlareImage = function () {
   //TotalFlareSkillの文字列
   let PDC1C2C1 = document.createElement("div");
   PDC1C2C1.style =
-    "width:70%;height:100%;display:flex;justify-content:center;align-items:center;flex-wrap: wrap;justify-content: flex-around;align-items:flex-center;align-content:space-around;";
+    "width: 54%; height: 100%; display: flex; justify-content:flex-end; align-items: center; flex-wrap: wrap;";
   PDC1C2C1.innerHTML = TotalFlare1;
   //TotalFlareSkillの数値
   let PDC1C2C2 = document.createElement("div");
   PDC1C2C2.id = "PDC1C2C2";
   PDC1C2C2.style =
-    "width:30%;height:100%;text-align:center;vertical-align: middle;display:flex;justify-content:center;align-items:center;flex-wrap: wrap;justify-content: flex-around;align-items:flex-center;align-content:space-around;";
+    "font-size:90%; width: 46%; height: 100%; display: flex; justify-content:flex-start; align-items: center; flex-wrap: wrap;";
   document.querySelector("#PDC1C2").appendChild(PDC1C2C1);
   document.querySelector("#PDC1C2").appendChild(PDC1C2C2);
   const TotalColorNum = [
@@ -317,7 +317,7 @@ window.MakeFlareImage = function () {
             TotalFlare2,
             "TotalFS",
             TotalColorCode[parseInt(Math.floor((i + 3) / 4))],
-            147,
+            200,
             90,
             50
           )
@@ -528,7 +528,7 @@ window.MakeFlareImage = function () {
   //4列目
   let PlayerDataChild4 = document.createElement("div");
   PlayerDataChild4.id = "PlayerData4";
-  PlayerDataChild4.style = "width:15%;height:100%;font-size:40px;";
+  PlayerDataChild4.style = "width:10%;height:100%;font-size:40px;";
   document.querySelector("#PlayerData").appendChild(PlayerDataChild4);
 
   // document.querySelector("#PlayerData3").appendChild(PDC2C1);
@@ -545,7 +545,7 @@ window.MakeFlareImage = function () {
   loader.style.top = "50%";
   loader.style.left = "50%";
   loader.style.transform = "translate(-50%, -50%)";
-  loader.style.fontSize = "50px";
+  loader.style.fontSize = "40px";
   document.body.appendChild(loader);
   let script = document.createElement("script");
   script.src =
