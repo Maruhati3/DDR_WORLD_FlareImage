@@ -222,7 +222,7 @@ window.MakeFlareImage = function () {
   //1列目
   let PlayerDataChild1 = document.createElement("div");
   PlayerDataChild1.id = "PlayerData1";
-  PlayerDataChild1.style = "width:40%;height:100%;font-size:50px;";
+  PlayerDataChild1.style = "width:44%;height:100%;font-size:50px;";
   document.querySelector("#PlayerData").appendChild(PlayerDataChild1);
   //上段の構成
   let PDC1C1 = document.createElement("div");
@@ -233,11 +233,11 @@ window.MakeFlareImage = function () {
   document.querySelector("#PlayerData1").appendChild(PDC1C1);
   let PDC1C1C1 = document.createElement("div");
   PDC1C1C1.style =
-    "width:54%;height:100%;display:flex;justify-content:flex-end;align-items:center;flex-wrap: wrap;justify-content: flex-around;align-items:flex-center;align-content:space-around;";
+    "width:50%;height:100%;display:flex;justify-content:flex-end;align-items:center;flex-wrap: wrap;justify-content: flex-around;align-items:flex-center;align-content:space-around;";
   PDC1C1C1.innerHTML = Pname1;
   let PDC1C1C2 = document.createElement("div");
   PDC1C1C2.style =
-    "width:46%;height:100%;display:flex;justify-content:center;align-items:center;flex-wrap: wrap;justify-content: flex-around;align-items:flex-center;align-content:space-around;";
+    "width:50%;height:100%;display:flex;justify-content:center;align-items:center;flex-wrap: wrap;justify-content: flex-around;align-items:flex-center;align-content:space-around;";
   PDC1C1C2.innerHTML = Pname2;
   document.querySelector("#PDC1C1").appendChild(PDC1C1C1);
   document.querySelector("#PDC1C1").appendChild(PDC1C1C2);
@@ -250,13 +250,13 @@ window.MakeFlareImage = function () {
   //TotalFlareSkillの文字列
   let PDC1C2C1 = document.createElement("div");
   PDC1C2C1.style =
-    "width: 54%; height: 100%; display: flex; justify-content:flex-end; align-items: center; flex-wrap: wrap;";
+    "width: 50%; height: 100%; display: flex; justify-content:flex-end; align-items: center; flex-wrap: wrap;";
   PDC1C2C1.innerHTML = TotalFlare1;
   //TotalFlareSkillの数値
   let PDC1C2C2 = document.createElement("div");
   PDC1C2C2.id = "PDC1C2C2";
   PDC1C2C2.style =
-    "font-size:90%; width: 46%; height: 100%; display: flex; justify-content:flex-start; align-items: center; flex-wrap: wrap;";
+    "font-size:90%; width: 50%; height: 100%; display: flex; justify-content:flex-start; align-items: center; flex-wrap: wrap;";
   document.querySelector("#PDC1C2").appendChild(PDC1C2C1);
   document.querySelector("#PDC1C2").appendChild(PDC1C2C2);
   const TotalColorNum = [
@@ -317,7 +317,7 @@ window.MakeFlareImage = function () {
             TotalFlare2,
             "TotalFS",
             TotalColorCode[parseInt(Math.floor((i + 3) / 4))],
-            200,
+            220,
             90,
             50
           )
@@ -528,7 +528,7 @@ window.MakeFlareImage = function () {
   //4列目
   let PlayerDataChild4 = document.createElement("div");
   PlayerDataChild4.id = "PlayerData4";
-  PlayerDataChild4.style = "width:10%;height:100%;font-size:40px;";
+  PlayerDataChild4.style = "width:6%;height:100%;font-size:40px;";
   document.querySelector("#PlayerData").appendChild(PlayerDataChild4);
 
   // document.querySelector("#PlayerData3").appendChild(PDC2C1);
