@@ -57,6 +57,12 @@ window.MakeFlareImage = function () {
     return svg;
   }
 
+  if(document.querySelector("#t_single").innerHTML.match(/playdata/)==null){
+    Pstyle='SP';
+  }else{
+    Pstyle='DP';
+  }
+
   var style = document.createElement("style");
   style.innerHTML =
     "#ddr_right #data_tbl td:nth-child(1) { width: 58px !important; }";
@@ -219,10 +225,17 @@ window.MakeFlareImage = function () {
     .querySelector(".main")
     .insertBefore(PlayerData, document.querySelector(".game_inner"));
 
-  //1列目
+  //1列目----------------------------------------------------------------
+  //1列目----------------------------------------------------------------
+  //1列目----------------------------------------------------------------
+  //1列目----------------------------------------------------------------
+  //1列目----------------------------------------------------------------
+
+
+
   let PlayerDataChild1 = document.createElement("div");
   PlayerDataChild1.id = "PlayerData1";
-  PlayerDataChild1.style = "width:44%;height:100%;font-size:50px;";
+  PlayerDataChild1.style = "width:calc(616%/18);height:100%;font-size:50px;";
   document.querySelector("#PlayerData").appendChild(PlayerDataChild1);
   //上段の構成
   let PDC1C1 = document.createElement("div");
@@ -305,7 +318,7 @@ window.MakeFlareImage = function () {
   colori = 0; //2列目用変数
 
   //debug用にレート値を変化させるゾーン----------------------------------------------------
-  //TotalFlare2 = "74999";
+  //TotalFlare2 = "99999";
   // console.debug(TotalFlare2);
   for (var i = 0; i < TotalColorNum.length; i++) {
     if (parseInt(TotalFlare2) >= parseInt(TotalColorNum[i])) {
@@ -334,13 +347,109 @@ window.MakeFlareImage = function () {
   }
   document.querySelector("#PDC1C2").appendChild(PDC1C2C1);
   document.querySelector("#PDC1C2").appendChild(PDC1C2C2);
-  // PDC1C2.innerHTML = TotalFlare1 + TotalFlare2;
-  //console.log("一列目終了");
+  //1.5列目------------------------------------
+  //1.5列目------------------------------------
+  //1.5列目------------------------------------
+  //1.5列目------------------------------------
+  let PlayerDataChild1_5 = document.createElement("div");
+  PlayerDataChild1_5.id = "PlayerData1_5";
+  PlayerDataChild1_5.style =
+    "flex-wrap: wrap;width:calc(100%*2/9);height:100%;font-size:40px;display: flex; justify-content: center;align-items:center;";
+  document.querySelector("#PlayerData").appendChild(PlayerDataChild1_5);
+  
+  let PDC15C1 = document.createElement("div");
+  PDC15C1.id = "PDC15C1";
+  PDC15C1.style =
+    "width: 100%; height: 50%; text-align: center; vertical-align: middle; display: flex; place-content: space-around center; align-items: center; flex-wrap: wrap;";
+  document.querySelector("#PlayerData1_5").appendChild(PDC15C1);
+  document
+    .querySelector("#PDC15C1")
+    .appendChild(
+      generateSVGText(
+        'Style',
+        "StyleText1",
+        ["#000000"],
+        200,
+        60,
+        40
+      )
+    );
+    document.querySelector("#PDC15C1 svg:last-of-type").querySelector("text").setAttribute("x", 150);
+  if(Pstyle=='SP'){
+    document
+    .querySelector("#PDC15C1")
+    .appendChild(
+      generateSVGText(
+        'Single',
+        "StyleText2",
+        ["#ff6400", "#fed200"],
+        200,
+        60,
+        40
+      )
+    );
+    const svg = document.querySelector("#PDC15C1 svg:last-of-type");
+    svg.querySelector("text").setAttribute("x", 180);
+    document.querySelector("#StyleText2").setAttribute("y2","100%");
+    document.querySelector("#StyleText2").setAttribute("x2","0%");
+  }else{
+    document
+    .querySelector("#PDC15C1")
+    .appendChild(
+      generateSVGText(
+        'Double',
+        "StyleText2",
+        ["#00a9fe", "#01fe17"],
+        200,
+        60,
+        40
+      )
+    );
+    const svg = document.querySelector("#PDC15C1 svg:last-of-type");
+    svg.querySelector("text").setAttribute("x", 180);
+    document.querySelector("#StyleText2").setAttribute("y2","100%");
+    document.querySelector("#StyleText2").setAttribute("x2","0%");
+  }
+  
+  let PDC15C2 = document.createElement("div");
+  PDC15C2.id = "PDC15C2";
+  PDC15C2.style =
+    "width: 100%; height: 50%; text-align: center; vertical-align: middle; display: flex; place-content: space-around center; align-items: center; flex-wrap: wrap;";
+  document.querySelector("#PlayerData1_5").appendChild(PDC15C2);
+
+  let PDC15C2C1 = document.createElement("div");
+  PDC15C2C1.style =
+    "font-size:28px;width: 60%; height: 100%; text-align: center; vertical-align: middle; display: flex; place-content: space-around center; align-items: center; flex-wrap: wrap;justify-content: flex-start;";
+  PDC15C2C1.innerText='Norma for next';
+  document.querySelector("#PDC15C2").appendChild(PDC15C2C1);
+
+  let PDC15C2C2 = document.createElement("div");
+  PDC15C2C2.style =
+    "width: 40%; height: 100%; text-align: center; vertical-align: middle; display: flex; place-content: space-around center; align-items: center; flex-wrap: wrap;";
+  for(i=0;i<TotalColorNum.length;i++){
+    if(parseInt( TotalFlare2)> TotalColorNum[i]){
+      if(i==0){
+        NormaNum='MAX';
+      }else{
+        NormaNum='+'+(TotalColorNum[i-1]-TotalFlare2);
+      }
+      break;
+    }
+  }
+  
+  
+  
+    PDC15C2C2.innerText=NormaNum;
+  document.querySelector("#PDC15C2").appendChild(PDC15C2C2);
+  //2列目------------------------------------
+  //2列目------------------------------------
+  //2列目------------------------------------
+  //2列目------------------------------------
   //2列目------------------------------------
   let PlayerDataChild2 = document.createElement("div");
   PlayerDataChild2.id = "PlayerData2";
   PlayerDataChild2.style =
-    "width:16%;height:100%;font-size:40px;display: flex; justify-content: center;align-items:center;";
+    "width:calc(16%*7/9);height:100%;font-size:40px;display: flex; justify-content: center;align-items:center;";
   document.querySelector("#PlayerData").appendChild(PlayerDataChild2);
   let PlayerDataChild2_1 = document.createElement("div");
   PlayerDataChild2_1.id = "PlayerData2_1";
@@ -472,10 +581,13 @@ window.MakeFlareImage = function () {
   document.body.appendChild(chartScript);
 
   //3列目---------------------------------
-
+  //3列目---------------------------------
+  //3列目---------------------------------
+  //3列目---------------------------------
+  //3列目---------------------------------
   let PlayerDataChild3 = document.createElement("div");
   PlayerDataChild3.id = "PlayerData3";
-  PlayerDataChild3.style = "width:34%;height:100%;font-size:40px;";
+  PlayerDataChild3.style = "width:calc(34%*7/9);height:100%;font-size:40px;";
   document.querySelector("#PlayerData").appendChild(PlayerDataChild3);
 
   // let PDC2C1=document.createElement("p");
@@ -528,7 +640,7 @@ window.MakeFlareImage = function () {
   //4列目
   let PlayerDataChild4 = document.createElement("div");
   PlayerDataChild4.id = "PlayerData4";
-  PlayerDataChild4.style = "width:6%;height:100%;font-size:40px;";
+  PlayerDataChild4.style = "width:calc(6%*7/9);height:100%;font-size:40px;";
   document.querySelector("#PlayerData").appendChild(PlayerDataChild4);
 
   // document.querySelector("#PlayerData3").appendChild(PDC2C1);
@@ -536,7 +648,12 @@ window.MakeFlareImage = function () {
   // document.querySelector("#PlayerData3").appendChild(PDC2C3);
 
   document.querySelector(".main").style = "width:1800px;";
-
+  //画像化-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+  //画像化-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+  //画像化-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+  //画像化-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+  //画像化-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+  //画像化-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
   //画像化-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
   let loader = document.createElement("div");
   loader.id = "loader";
