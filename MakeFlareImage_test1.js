@@ -57,10 +57,10 @@ window.MakeFlareImage = function () {
     return svg;
   }
 
-  if(document.querySelector("#t_single").innerHTML.match(/playdata/)==null){
-    Pstyle='SP';
-  }else{
-    Pstyle='DP';
+  if (document.querySelector("#t_single").innerHTML.match(/playdata/) == null) {
+    Pstyle = "SP";
+  } else {
+    Pstyle = "DP";
   }
 
   var style = document.createElement("style");
@@ -105,8 +105,8 @@ window.MakeFlareImage = function () {
     aSong.firstElementChild.firstChild.parentNode.insertAdjacentHTML(
       "afterend",
       '<td colspan="3" width="calc(100%-58px)">' +
-      aSong.firstElementChild.children[1].outerHTML +
-      "</td>"
+        aSong.firstElementChild.children[1].outerHTML +
+        "</td>"
     );
     aSong.firstElementChild.children[1].remove();
     aSong.children[1].style =
@@ -129,7 +129,8 @@ window.MakeFlareImage = function () {
   });
   document.querySelectorAll("#data_tbl").forEach((tbl) => {
     tbl.children[0].children[0].remove();
-    tbl.style = "width:calc(100%/3);font-size:220%;table-layout:fixed;";
+    tbl.style =
+      "width: calc(100%/3  -  69px);font-size:220%;table-layout:fixed;";
   });
   document.querySelectorAll(".graph_title").forEach((tbl) => {
     tbl.style.width = "calc(31.5%)";
@@ -151,41 +152,84 @@ window.MakeFlareImage = function () {
   TotalFlare1 = '<span style="font-size:30px">Total Flare Skill</span>';
   TotalFlare2 = parseInt(sumC) + parseInt(sumW) + parseInt(sumG);
   //曲数が満たない場合に空欄埋めるゾーン
-  maxindex = Math.max(
-    document.querySelectorAll(".data.flareskill_classic_table").length,
-    document.querySelectorAll(".data.flareskill_white_table").length,
-    document.querySelectorAll(".data.flareskill_gold_table").length
-  );
-  if (maxindex != document.querySelectorAll(".data.flareskill_classic_table").length) {
+  // .flareskill_classic_table の要素数を取得
+  const classicLength = document.querySelectorAll(
+    ".data.flareskill_classic_table"
+  ).length;
+  const whiteLength = document.querySelectorAll(
+    ".data.flareskill_white_table"
+  ).length;
+  const goldLength = document.querySelectorAll(
+    ".data.flareskill_gold_table"
+  ).length;
+  maxindex = Math.max(classicLength, whiteLength, goldLength);
+  if (maxindex != classicLength) {
     document.querySelectorAll("#data_tbl")[0].innerHTML =
       document.querySelectorAll("#data_tbl")[0].innerHTML +
       '<tr style="height: calc(67.8px*' +
-      parseInt(
-        maxindex -
-        document.querySelectorAll(".data.flareskill_classic_table").length
-      ) +
+      parseInt(maxindex - classicLength) +
       ');"></tr>';
   }
-  if (maxindex != document.querySelectorAll(".data.flareskill_white_table").length) {
+  if (maxindex != whiteLength) {
     document.querySelectorAll("#data_tbl")[1].innerHTML =
       document.querySelectorAll("#data_tbl")[1].innerHTML +
       '<tr style="height: calc(67.8px*' +
-      parseInt(
-        maxindex -
-        document.querySelectorAll(".data.flareskill_white_table").length
-      ) +
+      parseInt(maxindex - whiteLength) +
       ');"></tr>';
   }
-  if (maxindex != document.querySelectorAll(".data.flareskill_gold_table").length) {
+  if (maxindex != goldLength) {
     document.querySelectorAll("#data_tbl")[2].innerHTML =
       document.querySelectorAll("#data_tbl")[2].innerHTML +
       '<tr style="height: calc(67.8px*' +
-      parseInt(
-        maxindex -
-        document.querySelectorAll(".data.flareskill_gold_table").length
-      ) +
+      parseInt(maxindex - goldLength) +
       ');"></tr>';
   }
+
+  function createNumberListTable() {
+    let table = document.createElement("table");
+    table.style.borderCollapse = "collapse";
+    table.style.tableLayout = "fixed";
+    table.style.width = "69px";
+    table.style.height = "2071px";
+    table.style.fontSize="40px";
+    return table;
+  }
+
+  let numberlistC = createNumberListTable();
+  let numberlistW = createNumberListTable();
+  let numberlistG = createNumberListTable();
+
+  function fillNumberListTable(table, length, maxindex) {
+  for (let i = 0; i < maxindex; i++) {
+    let tr = document.createElement("tr");
+    tr.style.padding = "0";
+    tr.style.margin = "0";
+    tr.style.border = "1px solid #ccc";
+    tr.style.boxSizing = "border-box";
+
+    let td = document.createElement("td");
+    td.style.textAlign = "center";
+    td.style.padding = "0";
+    td.style.margin = "0";
+    td.style.border = "1px solid #ccc";
+    td.style.boxSizing = "border-box";
+
+    if (i < length) {
+      td.textContent = i + 1;
+    }
+
+    tr.appendChild(td);
+    table.appendChild(tr);
+  }
+}
+
+  fillNumberListTable(numberlistC, classicLength, maxindex);
+  fillNumberListTable(numberlistW, whiteLength, maxindex);
+  fillNumberListTable(numberlistG, goldLength, maxindex);
+
+  base.insertBefore(numberlistC, base.children[3]);
+  base.insertBefore(numberlistW, base.children[5]);
+  base.insertBefore(numberlistG, base.children[7]);
   //Classic White Goldのテキスト生成
   // sumC=     ("Classic&nbsp;Sum: " +sumC+"&nbsp;&nbsp;Classic average : "+(sumC/30).toPrecision(4));
   // sumW=     ("White&nbsp;&nbsp;&nbsp;Sum: "     +sumW  +"&nbsp;&nbsp;White&nbsp;&nbsp;&nbsp;average : "+(sumW/30).toPrecision(4));
@@ -194,25 +238,19 @@ window.MakeFlareImage = function () {
     "Classic&nbsp;: " +
     sumC +
     "&nbsp;(" +
-    (
-      sumC / document.querySelectorAll(".data.flareskill_classic_table").length
-    ).toPrecision(4) +
+    (sumC / classicLength).toPrecision(4) +
     ")";
   sumW =
     "White&nbsp;&nbsp;&nbsp;: " +
     sumW +
     "&nbsp;(" +
-    (
-      sumW / document.querySelectorAll(".data.flareskill_white_table").length
-    ).toPrecision(4) +
+    (sumW / whiteLength).toPrecision(4) +
     ")";
   sumG =
     "Gold&nbsp;&nbsp;&nbsp;&nbsp;: " +
     sumG +
     "&nbsp;(" +
-    (
-      sumG / document.querySelectorAll(".data.flareskill_gold_table").length
-    ).toPrecision(4) +
+    (sumG / goldLength).toPrecision(4) +
     ")";
 
   //上部分-------------------------------------------------------------------------------------------------------------------------------------------
@@ -230,8 +268,6 @@ window.MakeFlareImage = function () {
   //1列目----------------------------------------------------------------
   //1列目----------------------------------------------------------------
   //1列目----------------------------------------------------------------
-
-
 
   let PlayerDataChild1 = document.createElement("div");
   PlayerDataChild1.id = "PlayerData1";
@@ -356,7 +392,7 @@ window.MakeFlareImage = function () {
   PlayerDataChild1_5.style =
     "flex-wrap: wrap;width:calc(100%*2/9);height:100%;font-size:40px;display: flex; justify-content: center;align-items:center;";
   document.querySelector("#PlayerData").appendChild(PlayerDataChild1_5);
-  
+
   let PDC15C1 = document.createElement("div");
   PDC15C1.id = "PDC15C1";
   PDC15C1.style =
@@ -365,52 +401,48 @@ window.MakeFlareImage = function () {
   document
     .querySelector("#PDC15C1")
     .appendChild(
-      generateSVGText(
-        'Style',
-        "StyleText1",
-        ["#000000"],
-        200,
-        60,
-        40
-      )
+      generateSVGText("Style", "StyleText1", ["#000000"], 200, 60, 40)
     );
-    document.querySelector("#PDC15C1 svg:last-of-type").querySelector("text").setAttribute("x", 150);
-  if(Pstyle=='SP'){
+  document
+    .querySelector("#PDC15C1 svg:last-of-type")
+    .querySelector("text")
+    .setAttribute("x", 150);
+  if (Pstyle == "SP") {
     document
-    .querySelector("#PDC15C1")
-    .appendChild(
-      generateSVGText(
-        'Single',
-        "StyleText2",
-        ["#ff6400", "#fed200"],
-        200,
-        60,
-        40
-      )
-    );
+      .querySelector("#PDC15C1")
+      .appendChild(
+        generateSVGText(
+          "Single",
+          "StyleText2",
+          ["#ff6400", "#fed200"],
+          200,
+          60,
+          40
+        )
+      );
     const svg = document.querySelector("#PDC15C1 svg:last-of-type");
     svg.querySelector("text").setAttribute("x", 180);
-    document.querySelector("#StyleText2").setAttribute("y2","100%");
-    document.querySelector("#StyleText2").setAttribute("x2","0%");
-  }else{
+    document.querySelector("#StyleText2").setAttribute("y2", "100%");
+    document.querySelector("#StyleText2").setAttribute("x2", "0%");
+  } else {
     document
-    .querySelector("#PDC15C1")
-    .appendChild(
-      generateSVGText(
-        'Double',
-        "StyleText2",
-        ["#00a9fe", "#01fe17"],
-        200,
-        60,
-        40
-      )
-    );
+      .querySelector("#PDC15C1")
+      .appendChild(
+        generateSVGText(
+          "Double",
+          "StyleText2",
+          ["#00a9fe", "#01fe17"],
+          200,
+          60,
+          40
+        )
+      );
     const svg = document.querySelector("#PDC15C1 svg:last-of-type");
     svg.querySelector("text").setAttribute("x", 180);
-    document.querySelector("#StyleText2").setAttribute("y2","100%");
-    document.querySelector("#StyleText2").setAttribute("x2","0%");
+    document.querySelector("#StyleText2").setAttribute("y2", "100%");
+    document.querySelector("#StyleText2").setAttribute("x2", "0%");
   }
-  
+
   let PDC15C2 = document.createElement("div");
   PDC15C2.id = "PDC15C2";
   PDC15C2.style =
@@ -420,26 +452,24 @@ window.MakeFlareImage = function () {
   let PDC15C2C1 = document.createElement("div");
   PDC15C2C1.style =
     "font-size:28px;width: 60%; height: 100%; text-align: center; vertical-align: middle; display: flex; place-content: space-around center; align-items: center; flex-wrap: wrap;justify-content: flex-start;";
-  PDC15C2C1.innerText='Norma for next';
+  PDC15C2C1.innerText = "Norma for next";
   document.querySelector("#PDC15C2").appendChild(PDC15C2C1);
 
   let PDC15C2C2 = document.createElement("div");
   PDC15C2C2.style =
     "width: 40%; height: 100%; text-align: center; vertical-align: middle; display: flex; place-content: space-around center; align-items: center; flex-wrap: wrap;";
-  for(i=0;i<TotalColorNum.length;i++){
-    if(parseInt( TotalFlare2)> TotalColorNum[i]){
-      if(i==0){
-        NormaNum='MAX';
-      }else{
-        NormaNum='+'+(TotalColorNum[i-1]-TotalFlare2);
+  for (i = 0; i < TotalColorNum.length; i++) {
+    if (parseInt(TotalFlare2) > TotalColorNum[i]) {
+      if (i == 0) {
+        NormaNum = "MAX";
+      } else {
+        NormaNum = "+" + (TotalColorNum[i - 1] - TotalFlare2);
       }
       break;
     }
   }
-  
-  
-  
-    PDC15C2C2.innerText=NormaNum;
+
+  PDC15C2C2.innerText = NormaNum;
   document.querySelector("#PDC15C2").appendChild(PDC15C2C2);
   //2列目------------------------------------
   //2列目------------------------------------
@@ -689,30 +719,51 @@ window.MakeFlareImage = function () {
   //     document.getElementById("loader").remove();
   //   });
   // };
-  script.onload = () => {
-    // 一定時間待機してから画像化処理を実行
-    setTimeout(() => {
-      html2canvas(document.querySelector(".main")).then((canvas) => {
-        let topElement = document.querySelector("#top");
-        while (topElement.firstChild) {
-          topElement.removeChild(topElement.firstChild);
-        }
-        let img = document.createElement("img");
-        img.src = canvas.toDataURL("image/png");
-        img.style.width = "100%";
-        img.style.cursor = "pointer";
-        img.onclick = function () {
-          let link = document.createElement("a");
-          link.href = img.src;
-          link.download = "FlareList.png";
-          document.body.appendChild(link);
-          link.click();
-          document.body.removeChild(link);
+ script.onload = () => {
+  const target = document.querySelector(".main");
+  const images = target.querySelectorAll("img");
+  let loadedCount = 0;
+
+  if (images.length === 0) {
+    // 画像がないならすぐ画像化
+    capture();
+  } else {
+    images.forEach((img) => {
+      if (img.complete) {
+        loadedCount++;
+        if (loadedCount === images.length) capture();
+      } else {
+        img.onload = img.onerror = () => {
+          loadedCount++;
+          if (loadedCount === images.length) capture();
         };
-        topElement.appendChild(img);
-        document.getElementById("loader").remove();
-      });
-    }, 1000); // 1秒待機（必要に応じて調整可能）
-  };
+      }
+    });
+  }
+
+  function capture() {
+    html2canvas(target).then((canvas) => {
+      const topElement = document.querySelector("#top");
+      while (topElement.firstChild) {
+        topElement.removeChild(topElement.firstChild);
+      }
+      const img = document.createElement("img");
+      img.src = canvas.toDataURL("image/png");
+      img.style.width = "100%";
+      img.style.cursor = "pointer";
+      img.onclick = function () {
+        const link = document.createElement("a");
+        link.href = img.src;
+        link.download = "FlareList.png";
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+      };
+      topElement.appendChild(img);
+      document.getElementById("loader").remove();
+    });
+  }
+};
+
   document.body.appendChild(script);
 };
