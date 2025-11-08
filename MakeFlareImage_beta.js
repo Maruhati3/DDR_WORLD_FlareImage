@@ -656,7 +656,7 @@ window.MakeFlareImage = function () {
         topElement.appendChild(img);
         document.getElementById("loader").remove();
       });
-    }, 1000); // 1秒待機（必要に応じて調整可能）
+    }, 2000); // 2秒待機（必要に応じて調整可能）
   };
   document.body.appendChild(script);
 };
