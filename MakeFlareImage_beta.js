@@ -64,23 +64,24 @@ window.MakeFlareImage = function () {
     Pstyle = "Dp";
   }
   // 画像要素を作成
-  const img = document.createElement("img");
-  img.src =
+  const imgs = document.createElement("img");
+  imgs.src =
     "https://raw.githubusercontent.com/Maruhati3/DDR_WORLD_FlareImage/main/Image/"+Pstyle+"TextW.png";
-  img.style.height = "100%";
-  img.style.width = "auto";
-  img.style.position = "absolute";
-  img.style.left = "0px";
-  img.style.top = "0";
+  imgs.style.height = "100%";
+  imgs.style.width = "auto";
+  imgs.style.position = "absolute";
+  imgs.style.left = "0px";
+  imgs.style.top = "0";
 
   // 追加先の div を取得（クラス名が 'targetDivClass' の場合）
   const targetDiv = document.querySelector(".chapter");
   targetDiv.style.position="relative";
 
   // div に画像を追加
-  if (targetDiv) {
-    targetDiv.appendChild(img);
-  }
+  
+  /*if (targetDiv) {
+    targetDiv.appendChild(imgs);
+  }*/
 
   var style = document.createElement("style");
   style.innerHTML =
