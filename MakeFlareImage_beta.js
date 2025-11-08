@@ -66,7 +66,7 @@ window.MakeFlareImage = function () {
   // 画像要素を作成
   const img = document.createElement("img");
   img.src =
-    "https://raw.githubusercontent.com/Maruhati3/DDR_WORLD_FlareImage/main/Image/"+Pstyle+"Text.png";
+    "https://raw.githubusercontent.com/Maruhati3/DDR_WORLD_FlareImage/main/Image/"+Pstyle+"TextW.png";
   img.style.height = "100%";
   img.style.width = "auto";
   img.style.position = "absolute";
