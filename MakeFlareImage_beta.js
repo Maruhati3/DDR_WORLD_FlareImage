@@ -57,6 +57,31 @@ window.MakeFlareImage = function () {
     return svg;
   }
 
+  //SP or DP スタイルの取得
+  if (document.querySelector("#t_single").innerHTML.match(/playdata/) == null) {
+    Pstyle = "Sp";
+  } else {
+    Pstyle = "Dp";
+  }
+  // 画像要素を作成
+  const img = document.createElement("img");
+  img.src =
+    "https://raw.githubusercontent.com/Maruhati3/DDR_WORLD_FlareImage/main/Image/"+Pstyle+"TextW.png";
+  img.style.height = "100%";
+  img.style.width = "auto";
+  img.style.position = "absolute";
+  img.style.left = "0px";
+  img.style.top = "0";
+
+  // 追加先の div を取得（クラス名が 'targetDivClass' の場合）
+  const targetDiv = document.querySelector(".chapter");
+  targetDiv.style.position="relative";
+
+  // div に画像を追加
+  if (targetDiv) {
+    targetDiv.appendChild(img);
+  }
+
   var style = document.createElement("style");
   style.innerHTML =
     "#ddr_right #data_tbl td:nth-child(1) { width: 58px !important; }";
@@ -99,8 +124,8 @@ window.MakeFlareImage = function () {
     aSong.firstElementChild.firstChild.parentNode.insertAdjacentHTML(
       "afterend",
       '<td colspan="3" width="calc(100%-58px)">' +
-      aSong.firstElementChild.children[1].outerHTML +
-      "</td>"
+        aSong.firstElementChild.children[1].outerHTML +
+        "</td>"
     );
     aSong.firstElementChild.children[1].remove();
     aSong.children[1].style =
@@ -150,33 +175,40 @@ window.MakeFlareImage = function () {
     document.querySelectorAll(".data.flareskill_white_table").length,
     document.querySelectorAll(".data.flareskill_gold_table").length
   );
-  if (maxindex != document.querySelectorAll(".data.flareskill_classic_table").length) {
+  if (
+    maxindex !=
+    document.querySelectorAll(".data.flareskill_classic_table").length
+  ) {
     document.querySelectorAll("#data_tbl")[0].innerHTML =
       document.querySelectorAll("#data_tbl")[0].innerHTML +
       '<tr style="height: calc(67.8px*' +
       parseInt(
         maxindex -
-        document.querySelectorAll(".data.flareskill_classic_table").length
+          document.querySelectorAll(".data.flareskill_classic_table").length
       ) +
       ');"></tr>';
   }
-  if (maxindex != document.querySelectorAll(".data.flareskill_white_table").length) {
+  if (
+    maxindex != document.querySelectorAll(".data.flareskill_white_table").length
+  ) {
     document.querySelectorAll("#data_tbl")[1].innerHTML =
       document.querySelectorAll("#data_tbl")[1].innerHTML +
       '<tr style="height: calc(67.8px*' +
       parseInt(
         maxindex -
-        document.querySelectorAll(".data.flareskill_white_table").length
+          document.querySelectorAll(".data.flareskill_white_table").length
       ) +
       ');"></tr>';
   }
-  if (maxindex != document.querySelectorAll(".data.flareskill_gold_table").length) {
+  if (
+    maxindex != document.querySelectorAll(".data.flareskill_gold_table").length
+  ) {
     document.querySelectorAll("#data_tbl")[2].innerHTML =
       document.querySelectorAll("#data_tbl")[2].innerHTML +
       '<tr style="height: calc(67.8px*' +
       parseInt(
         maxindex -
-        document.querySelectorAll(".data.flareskill_gold_table").length
+          document.querySelectorAll(".data.flareskill_gold_table").length
       ) +
       ');"></tr>';
   }
@@ -218,6 +250,13 @@ window.MakeFlareImage = function () {
   document
     .querySelector(".main")
     .insertBefore(PlayerData, document.querySelector(".game_inner"));
+
+  /*
+    <img src="https://raw.githubusercontent.com/Maruhati3/DDR_WORLD_FlareImage/main/Image/SpText.png" class="pc" alt="楽曲データ/フレアスキル対象楽曲" style="height:100%;width:auto;position:absolute;left:0px;top:0;">
+    
+    
+    
+    */
 
   //1列目
   let PlayerDataChild1 = document.createElement("div");
@@ -278,8 +317,9 @@ window.MakeFlareImage = function () {
     "mercury",
     "none",
   ];
-  const TotalColorCode = [
-    [
+
+  /*
+  [
       "#9a4cf4",
       "#e25eb9",
       "#fb6587",
@@ -287,6 +327,20 @@ window.MakeFlareImage = function () {
       "#fdce4a",
       "#fefc03",
       "#e6ff1e",
+      "#ccff50",
+      "#9cfd83",
+      "#54f3b0",
+    ]
+  */
+  const TotalColorCode = [
+    [
+      "#9a4cf4",
+      "#e25eb9",
+      "#fb6587",
+      "#ffa165",
+      "#fdce4a",
+      "#e0e015",
+      "#c8e136",
       "#ccff50",
       "#9cfd83",
       "#54f3b0",
@@ -358,7 +412,9 @@ window.MakeFlareImage = function () {
   document.querySelector("#PlayerData2_1").appendChild(FlareCanvas);
   //グラフ用パラメータを設定---------------
   if (colori == 0) {
-    percentage = 99.9999999;
+    //
+    // percentage = 99.9999999;
+    percentage = (TotalFlare2 % 1000) / 10;
   } else {
     percentage =
       (100 * (parseInt(TotalFlare2) - TotalColorNum[colori])) /
@@ -375,7 +431,11 @@ window.MakeFlareImage = function () {
   //惑星の名前 一行目の文字列
   chartname1 = TotalColorName[parseInt(Math.floor((i + 3) / 4))];
   // 二行目の文字列
-  chartname2 = "+".repeat(parseInt((40 - colori) % 4));
+  if (colori == 0) {
+    chartname2 = "+".repeat(parseInt((TotalFlare2 - 90000) / 1000));
+  } else {
+    chartname2 = "+".repeat(parseInt((40 - colori) % 4));
+  }
 
   // console.debug(percentage);
   // console.debug(backgroundColor);
