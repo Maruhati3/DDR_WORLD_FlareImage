@@ -219,6 +219,18 @@ window.MakeFlareImage = function () {
     .querySelector(".main")
     .insertBefore(PlayerData, document.querySelector(".game_inner"));
 
+
+    /*
+    <img src="https://raw.githubusercontent.com/Maruhati3/DDR_WORLD_FlareImage/main/Image/SpText.png" class="pc" alt="楽曲データ/フレアスキル対象楽曲" style="height:100%;width:auto;position:absolute;left:0px;top:0;">
+    
+    
+    
+    */ 
+
+
+
+
+  
   //1列目
   let PlayerDataChild1 = document.createElement("div");
   PlayerDataChild1.id = "PlayerData1";
@@ -278,8 +290,9 @@ window.MakeFlareImage = function () {
     "mercury",
     "none",
   ];
-  const TotalColorCode = [
-    [
+
+  /*
+  [
       "#9a4cf4",
       "#e25eb9",
       "#fb6587",
@@ -287,6 +300,20 @@ window.MakeFlareImage = function () {
       "#fdce4a",
       "#fefc03",
       "#e6ff1e",
+      "#ccff50",
+      "#9cfd83",
+      "#54f3b0",
+    ]
+  */
+  const TotalColorCode = [
+    [
+      "#9a4cf4",
+      "#e25eb9",
+      "#fb6587",
+      "#ffa165",
+      "#fdce4a",
+      "#e0e015",
+      "#c8e136",
       "#ccff50",
       "#9cfd83",
       "#54f3b0",
@@ -358,7 +385,9 @@ window.MakeFlareImage = function () {
   document.querySelector("#PlayerData2_1").appendChild(FlareCanvas);
   //グラフ用パラメータを設定---------------
   if (colori == 0) {
-    percentage = 99.9999999;
+   //
+   // percentage = 99.9999999;
+   percentage=(TotalFlare2%1000)/10;
   } else {
     percentage =
       (100 * (parseInt(TotalFlare2) - TotalColorNum[colori])) /
@@ -375,7 +404,11 @@ window.MakeFlareImage = function () {
   //惑星の名前 一行目の文字列
   chartname1 = TotalColorName[parseInt(Math.floor((i + 3) / 4))];
   // 二行目の文字列
-  chartname2 = "+".repeat(parseInt((40 - colori) % 4));
+  if (colori==0) {
+    chartname2 = "+".repeat(parseInt((TotalFlare2-90000)/1000));
+  }else{
+    chartname2 = "+".repeat(parseInt((40 - colori) % 4));
+  }
 
   // console.debug(percentage);
   // console.debug(backgroundColor);
