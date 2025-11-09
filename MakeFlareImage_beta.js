@@ -65,23 +65,24 @@ window.MakeFlareImage = function () {
   }
   // 画像要素を作成
   const imgs = document.createElement("img");
+  imgs.crossOrigin="anonymous";
   imgs.src =
-    "https://raw.githubusercontent.com/Maruhati3/DDR_WORLD_FlareImage/main/Image/"+Pstyle+"TextW.png";
-  imgs.style.height = "100%";
+    "https://cdn.jsdelivr.net/gh/Maruhati3/DDR_WORLD_FlareImage/Image/"+Pstyle+"TextW.png";
+  imgs.style.height = "110%";
   imgs.style.width = "auto";
   imgs.style.position = "absolute";
-  imgs.style.left = "0px";
-  imgs.style.top = "0";
+  imgs.style.left = "-10px";
+  imgs.style.top = "-4px";
 
-  // 追加先の div を取得（クラス名が 'targetDivClass' の場合）
+  // 追加先の div を取得
   const targetDiv = document.querySelector(".chapter");
   targetDiv.style.position="relative";
 
   // div に画像を追加
   
-  /*if (targetDiv) {
+  if (targetDiv) {
     targetDiv.appendChild(imgs);
-  }*/
+  }
 
   var style = document.createElement("style");
   style.innerHTML =
@@ -599,6 +600,12 @@ window.MakeFlareImage = function () {
   document.querySelector(".main").style = "width:1400px;";
 
   //画像化-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+  //画像化-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+  //画像化-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+  //画像化-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+  //画像化-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+  //画像化-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+  //画像化-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
   let loader = document.createElement("div");
   loader.id = "loader";
   loader.innerHTML = '<div class="spinner"></div> Loading...';
@@ -611,28 +618,11 @@ window.MakeFlareImage = function () {
   let script = document.createElement("script");
   script.src =
     "https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js";
-  // script.onload = () => {
-  //   html2canvas(document.querySelector(".main")).then((canvas) => {
-  //     topElement = document.querySelector("#top");
-  //     while (topElement.firstChild) {
-  //       topElement.removeChild(topElement.firstChild);
-  //     }
-  //     let img = document.createElement("img");
-  //     img.src = canvas.toDataURL("image/png");
-  //     img.style.width = "100%";
-  //     img.style.cursor = "pointer";
-  //     img.onclick = function () {
-  //       let link = document.createElement("a");
-  //       link.href = img.src;
-  //       link.download = "FlareList.png";
-  //       document.body.appendChild(link);
-  //       link.click();
-  //       document.body.removeChild(link);
-  //     };
-  //     topElement.appendChild(img);
-  //     document.getElementById("loader").remove();
-  //   });
-  // };
+  
+
+
+  
+/*
   script.onload = () => {
     // 一定時間待機してから画像化処理を実行
     setTimeout(() => {
@@ -657,6 +647,82 @@ window.MakeFlareImage = function () {
         document.getElementById("loader").remove();
       });
     }, 2000); // 2秒待機（必要に応じて調整可能）
-  };
+  };*/
+  script.onload = () => {
+  (async () => {
+    // 外部cdn画像があるなら crossOrigin を強制（任意）
+    Array.from(document.images).forEach(im => {
+      try {
+        const url = new URL(im.src, location.href);
+        if (url.hostname.endsWith('cdn.jsdelivr.net') || url.hostname.endsWith('raw.githubusercontent.com')) {
+          const cur = im.src;
+          im.crossOrigin = "anonymous";
+          im.src = cur;
+        }
+      } catch(e){}
+    });
+
+    // 全 img の decode を待つ（最大5秒でタイムアウト）
+    const imgsAll = Array.from(document.images);
+    const decodePromises = imgsAll.map((im) => {
+      if ('decode' in im) {
+        return im.decode().catch(() => new Promise((res) => {
+          if (im.complete) return res();
+          im.onload = res; im.onerror = res;
+        }));
+      } else {
+        return new Promise((res) => {
+          if (im.complete) return res();
+          im.onload = res; im.onerror = res;
+        });
+      }
+    });
+    const timeout = new Promise((res) => setTimeout(res, 5000));
+    await Promise.race([Promise.all(decodePromises), timeout]);
+
+    // 見た目上は h2 に合わせていた imgs の高さが % で不安定ならここで再調整
+    try {
+      const chapter = document.querySelector('.chapter');
+      const heading = chapter && chapter.querySelector('h2');
+      if (heading) {
+        const h2h = heading.getBoundingClientRect().height || heading.offsetHeight;
+        const overlay = chapter.querySelector('img'); // あなたの imgs が最初の img の場合
+        if (overlay) overlay.style.height = h2h + 'px';
+      }
+    } catch(e){}
+
+    // html2canvas 実行（CORSを有効）
+    try {
+      const canvas = await html2canvas(document.querySelector(".main"), {
+        useCORS: true,
+        allowTaint: false,
+        backgroundColor: "#ffffff",
+        scale: window.devicePixelRatio || 2
+      });
+
+      const topElement = document.querySelector("#top");
+      while (topElement.firstChild) topElement.removeChild(topElement.firstChild);
+      const outImg = document.createElement("img");
+      outImg.src = canvas.toDataURL("image/png");
+      outImg.style.width = "100%";
+      outImg.style.cursor = "pointer";
+      outImg.onclick = function () {
+        const link = document.createElement("a");
+        link.href = outImg.src;
+        link.download = "FlareList.png";
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+      };
+      topElement.appendChild(outImg);
+    } catch(err) {
+      console.error("html2canvas error:", err);
+    } finally {
+      const ld = document.getElementById("loader");
+      if (ld) ld.remove();
+    }
+  })();
+};
+
   document.body.appendChild(script);
 };
