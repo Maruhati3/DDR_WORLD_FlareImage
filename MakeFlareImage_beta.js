@@ -66,12 +66,14 @@ window.MakeFlareImage = function () {
   // 画像要素を作成
   const imgs = document.createElement("img");
   imgs.src =
-    "https://raw.githubusercontent.com/Maruhati3/DDR_WORLD_FlareImage/main/Image/"+Pstyle+"TextW.png";
-  imgs.style.height = "100%";
+    "https://cdn.jsdelivr.net/gh/Maruhati3/DDR_WORLD_FlareImage/Image/"+Pstyle+"TextW.png";
+
+  imgs.style.height = "101%";
   imgs.style.width = "auto";
   imgs.style.position = "absolute";
   imgs.style.left = "0px";
   imgs.style.top = "0";
+  imgs.crossOrigin="anonymous"
 
   // 追加先の div を取得（クラス名が 'targetDivClass' の場合）
   const targetDiv = document.querySelector(".chapter");
@@ -79,9 +81,9 @@ window.MakeFlareImage = function () {
 
   // div に画像を追加
   
-  /*if (targetDiv) {
+  if (targetDiv) {
     targetDiv.appendChild(imgs);
-  }*/
+  }
 
   var style = document.createElement("style");
   style.innerHTML =
@@ -599,6 +601,12 @@ window.MakeFlareImage = function () {
   document.querySelector(".main").style = "width:1400px;";
 
   //画像化-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+  //画像化-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+  //画像化-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+  //画像化-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+  //画像化-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+  //画像化-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+  //画像化-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
   let loader = document.createElement("div");
   loader.id = "loader";
   loader.innerHTML = '<div class="spinner"></div> Loading...';
@@ -611,28 +619,7 @@ window.MakeFlareImage = function () {
   let script = document.createElement("script");
   script.src =
     "https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js";
-  // script.onload = () => {
-  //   html2canvas(document.querySelector(".main")).then((canvas) => {
-  //     topElement = document.querySelector("#top");
-  //     while (topElement.firstChild) {
-  //       topElement.removeChild(topElement.firstChild);
-  //     }
-  //     let img = document.createElement("img");
-  //     img.src = canvas.toDataURL("image/png");
-  //     img.style.width = "100%";
-  //     img.style.cursor = "pointer";
-  //     img.onclick = function () {
-  //       let link = document.createElement("a");
-  //       link.href = img.src;
-  //       link.download = "FlareList.png";
-  //       document.body.appendChild(link);
-  //       link.click();
-  //       document.body.removeChild(link);
-  //     };
-  //     topElement.appendChild(img);
-  //     document.getElementById("loader").remove();
-  //   });
-  // };
+  
   script.onload = () => {
     // 一定時間待機してから画像化処理を実行
     setTimeout(() => {
