@@ -65,17 +65,16 @@ window.MakeFlareImage = function () {
   }
   // 画像要素を作成
   const imgs = document.createElement("img");
+  imgs.crossOrigin="anonymous"
   imgs.src =
     "https://cdn.jsdelivr.net/gh/Maruhati3/DDR_WORLD_FlareImage/Image/"+Pstyle+"TextW.png";
-
-  imgs.style.height = "101%";
+  imgs.style.height = "110%";
   imgs.style.width = "auto";
   imgs.style.position = "absolute";
-  imgs.style.left = "0px";
-  imgs.style.top = "0";
-  imgs.crossOrigin="anonymous"
+  imgs.style.left = "-10px";
+  imgs.style.top = "-4px";
 
-  // 追加先の div を取得（クラス名が 'targetDivClass' の場合）
+  // 追加先の div を取得
   const targetDiv = document.querySelector(".chapter");
   targetDiv.style.position="relative";
 
