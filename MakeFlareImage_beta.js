@@ -65,7 +65,7 @@ window.MakeFlareImage = function () {
   }
   // 画像要素を作成
   const imgs = document.createElement("img");
-  imgs.crossOrigin="anonymous"
+  imgs.crossOrigin="anonymous";
   imgs.src =
     "https://cdn.jsdelivr.net/gh/Maruhati3/DDR_WORLD_FlareImage/Image/"+Pstyle+"TextW.png";
   imgs.style.height = "110%";
