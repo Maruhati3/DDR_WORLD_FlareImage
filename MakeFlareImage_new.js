@@ -63,7 +63,99 @@ window.MakeFlareImage = function () {
   .new_analyze{
     display:flex;
     flex-wrap: wrap;
+    justify-content: space-around;
   }
+  .starbox{
+    display:flex;
+    justify-content:center;
+    gap:4px;
+    margin-bottom:8px !important;
+  }
+  .analyzeChild1{
+    width:73.8%;
+    max-width:80%;
+    border-radius: 4px;
+    color: #909090;
+    font-size: 16px;
+    text-align: center;
+    font-weight: bold;
+    line-height: 1em;
+    padding: 16px;
+    margin-bottom: 16px;
+    border: 1px solid lightgray;
+    background-size: auto auto;
+    background-color: rgb(252 252 252) !important;
+  }
+  .table1{
+    width:15%;
+    max-width:15%;
+  }
+  .table2{
+    width:60%;
+    max-width:60%;
+  }
+  .new_table-ui{
+    border: 1px solid lightgray !important;
+    border-radius: 6px;
+    overflow: hidden;
+    border-collapse: collapse;
+  }
+  .new_table-ui th,
+  .new_table-ui td {
+    font-size: 1.8em;
+    font-weight: bold;
+    overflow: hidden;
+  }
+  .new_table-ui tr.theme-classic {
+    --tbl-accent: #d29067;
+    --tbl-line: #efdfc8;
+    --tbl-cell-line: transparent;
+    --tbl-text: #4a2f12;
+    --tbl-row-odd: #fff2e9;
+    --tbl-row-even: #fff2e9;
+  }
+
+  .new_table-ui tr.theme-white {
+    --tbl-accent: #acbec7;
+    --tbl-line: #e1e1e1;
+    --tbl-cell-line: transparent;
+    --tbl-text: #5f5f5f;
+    --tbl-row-odd: #f0f0f0;
+    --tbl-row-even: #f0f0f0;
+  }
+
+  .new_table-ui tr.theme-gold {
+    --tbl-accent: #e9bc2c;
+    --tbl-line: #efdfc8;
+    --tbl-cell-line: transparent;
+    --tbl-text: #4a2f12;
+    --tbl-row-odd: #fff6d1;
+    --tbl-row-even: #fff6d1;
+  }
+
+  .new_table-ui tr.theme-classic td {
+    color: var(--tbl-text);
+    background: var(--tbl-row-odd);
+    border-color: var(--tbl-line);
+  }
+
+  .new_table-ui tr.theme-white td {
+    color: var(--tbl-text);
+    background: var(--tbl-row-odd);
+    border-color: var(--tbl-line);
+  }
+
+  .new_table-ui tr.theme-gold td {
+    color: var(--tbl-text);
+    background: var(--tbl-row-odd);
+    border-color: var(--tbl-line);
+  }
+  .table1,
+  .table2,
+  .total-flare-skill,
+  .analyzeChild1{
+    box-sizing:border-box;
+  }    
   @media screen {
   #ddr_left{display: none;}
   #ddr_right{width: 100%;}
@@ -139,7 +231,16 @@ window.MakeFlareImage = function () {
           link.href = image.src;
 
           // 保存ファイル名
-          link.download = `${Str_targetid}.png`;
+          const date = new Date();
+          const y = date.getFullYear();
+          const m = String(date.getMonth() + 1).padStart(2, "0");
+          const d = String(date.getDate()).padStart(2, "0");
+          const h = String(date.getHours()).padStart(2, "0");
+          const minu = String(date.getMinutes()).padStart(2, "0");
+
+          const filename = "FlareList_" + y + m + d + "_" + h + minu + ".png";    
+
+          link.download = `${filename}.png`;
 
           link.click();
         };
@@ -180,51 +281,75 @@ window.MakeFlareImage = function () {
     }
   }
   function fitTextTwoLines(el) {
-
     // 初回だけ元サイズ保存
     if (!el.dataset.originalFontSize) {
-
-      el.dataset.originalFontSize =
-        window.getComputedStyle(el).fontSize;
+      el.dataset.originalFontSize = window.getComputedStyle(el).fontSize;
     }
 
-    const original =
-      parseFloat(el.dataset.originalFontSize);
+    const original = parseFloat(el.dataset.originalFontSize);
 
     let size = original;
 
     const minSize = 8;
 
     // 元サイズへ戻す
-    el.style.fontSize =
-      el.dataset.originalFontSize;
+    el.style.fontSize = el.dataset.originalFontSize;
 
-    const lineHeight =
-      parseFloat(
-        window.getComputedStyle(el).lineHeight
-      );
+    const lineHeight = parseFloat(window.getComputedStyle(el).lineHeight);
 
     // 2行まで許容
     const maxHeight = lineHeight * 2;
 
     // 3行目に入る間だけ縮小
-    while (
-      el.scrollHeight > maxHeight &&
-      size > minSize
-    ) {
-
+    while (el.scrollHeight > maxHeight && size > minSize) {
       size -= 0.5;
 
-      el.style.fontSize = size + 'px';
+      el.style.fontSize = size + "px";
+    }
+  }
+  function fitCell(el) {
+    if (!el.dataset.originalFontSize) {
+      el.dataset.originalFontSize = getComputedStyle(el).fontSize;
+    }
+
+    const original = parseFloat(el.dataset.originalFontSize);
+
+    let size = original;
+
+    const availableWidth =
+      el.getBoundingClientRect().width -
+      parseFloat(getComputedStyle(el).paddingLeft) -
+      parseFloat(getComputedStyle(el).paddingRight);
+
+    while (size > 8) {
+      el.style.fontSize = size + "px";
+
+      const canvas =
+        fitCell.canvas || (fitCell.canvas = document.createElement("canvas"));
+      const ctx = canvas.getContext("2d");
+
+      const style = getComputedStyle(el);
+
+      ctx.font = `${style.fontWeight} ${size}px ${style.fontFamily}`;
+
+      const textWidth = ctx.measureText(el.textContent).width;
+
+      if (textWidth <= availableWidth) {
+        break;
+      }
+
+      size -= 0.5;
     }
   }
   function applyMusicFit() {
-
-    document.querySelectorAll('.new_music-name')
-      .forEach(fitTextTwoLines);
+    document.querySelectorAll(".new_music-name").forEach(fitTextTwoLines);
   }
-
-  // ===== main ===============================================================
+  // ===== main ============================================================================================================================================================================================================================================================
+  // ===== main ============================================================================================================================================================================================================================================================
+  // ===== main ============================================================================================================================================================================================================================================================
+  // ===== main ============================================================================================================================================================================================================================================================
+  // ===== main ============================================================================================================================================================================================================================================================
+  // ===== main ============================================================================================================================================================================================================================================================
   //横幅を固定
   document.querySelector(".main-ui").style.width = "1400px";
 
@@ -327,6 +452,18 @@ window.MakeFlareImage = function () {
     // 1,2要素目の間に挿入
     data.insertBefore(newTd, secondTd);
   });
+  elementsUi.forEach((ui) => {
+    //5の倍数の底辺を太くする
+    const rows = ui.querySelectorAll("tbody tr");
+    rows.forEach((row, index) => {
+      // 5,10,15...行目（1-indexed）
+      if ((index + 1) % 5 === 0) {
+        row.querySelectorAll("td").forEach((td) => {
+          td.style.borderBottom = "3px solid var(--tbl-line)";
+        });
+      }
+    });
+  });
   //lvとskill表示を変える(主に文字サイズ)
   document.querySelectorAll(".skill-value").forEach((skill) => {
     skill.classList.remove("skill-value");
@@ -349,24 +486,19 @@ window.MakeFlareImage = function () {
     cell.style.overflow = "hidden";
   });
   //要素の幅を指定
-  elementsOfSongs.forEach(data => {
+  elementsOfSongs.forEach((data) => {
+    const widths = ["70%", "8%", "14%", "8%"];
 
-  const widths = ['70%', '8%', '14%', '8%'];
+    [...data.children].forEach((cell, i) => {
+      cell.style.width = widths[i];
 
-  [...data.children].forEach((cell, i) => {
+      cell.style.maxWidth = widths[i];
 
-    cell.style.width = widths[i];
-
-    cell.style.maxWidth = widths[i];
-
-    cell.style.boxSizing = 'border-box';
-
+      cell.style.boxSizing = "border-box";
+    });
   });
-
-});
   // 一行目の幅を指定
   elementsUi.forEach((ui) => {
-
     const thead = ui.querySelector("thead");
 
     if (!thead) return;
@@ -384,16 +516,13 @@ window.MakeFlareImage = function () {
     th4.style.width = "8%";
 
     // 念のため
-    [th1, th2, th3, th4].forEach(th => {
-
+    [th1, th2, th3, th4].forEach((th) => {
       th.style.maxWidth = th.style.width;
 
       th.style.boxSizing = "border-box";
 
       th.style.overflow = "hidden";
-
     });
-
   });
   //style-tabの折り返し設定を追加(flexbox)
   document.querySelector(".style-tab").style = "flex-wrap: wrap;";
@@ -427,27 +556,420 @@ window.MakeFlareImage = function () {
     stylebutton.style.lineHeight = "1";
     fitText(stylebutton);
   });
-  document.querySelectorAll('.music-name').forEach((musicname) => {
+  document.querySelectorAll(".music-name").forEach((musicname) => {
     musicname.classList.remove("music-name");
     musicname.classList.add("new_music-name");
     fitTextTwoLines(musicname);
   });
   applyMusicFit();
-  window.addEventListener(
-    'resize',
-    applyMusicFit
-  );
+  window.addEventListener("resize", applyMusicFit);
+
   //上画面の調整
-  const elementFlareLank=document.querySelector('.total-flare-skill');
-  elementFlareLank.style="width:20%;";
+  //既存のフレアランク表示の移動
+  const elementFlareLank = document.querySelector(".total-flare-skill");
+  elementFlareLank.style = "width:20%;";
   // 新しいdiv作成
-  const elementAnalyze = document.createElement('div');
-  elementAnalyze.classList.add("new_analyze")
+  const elementAnalyze = document.createElement("div");
+  elementAnalyze.classList.add("new_analyze");
   // 直前に挿入
-  elementFlareLank.parentNode.insertBefore(elementAnalyze, elementFlareLank);  
+  elementFlareLank.parentNode.insertBefore(elementAnalyze, elementFlareLank);
   elementAnalyze.appendChild(elementFlareLank);
-  
+  //https://raw.githubusercontent.com/Maruhati3/DDR_WORLD_FlareImage/main/Image/star_10.png
+
+  //worldデバッグ用=================================================================
+  /*
+  document.querySelectorAll(".rank-9").forEach(el=>{
+    el.classList.remove("rank-9");
+    el.classList.add("rank-10")
+  });
+  document.querySelector(".total-flare-skill-value").textContent="93200";
+  */
+  //worldデバッグ用=================================================================
+  //WORLDの場合に星を挿入
+  if (document.querySelector(".rank-10")) {
+    const elementTotalFlareSKill = document.querySelector(
+      ".total-flare-skill-value",
+    );
+    worldRank = Math.floor(
+      (parseInt(
+        document.querySelector(".total-flare-skill-value").textContent,
+      ) -
+        90000) /
+        1000,
+    );
+    const elementStarBox = document.createElement("div");
+    elementStarBox.classList.add("starbox");
+    elementTotalFlareSKill.parentNode.insertBefore(
+      elementStarBox,
+      elementTotalFlareSKill,
+    );
+    for (let i = 0; i < worldRank; i++) {
+      const img = document.createElement("img");
+      img.classList.add("icon", "star");
+      img.src =
+        "https://raw.githubusercontent.com/Maruhati3/DDR_WORLD_FlareImage/main/Image/star_10.png";
+      elementStarBox.appendChild(img);
+    }
+    //グラデーションの為にsvg作成
+
+    const value = elementTotalFlareSKill.textContent.trim();
+
+    const gradientId = `flareGradient_${crypto.randomUUID()}`;
+
+    const svg = `
+    <svg
+      class="flare-gradient-text"
+      width="70"
+      height="31"
+      viewBox="0 0 70 31"
+    >
+      <defs>
+        <linearGradient id="${gradientId}" x1="0%" y1="0%" x2="100%" y2="0%">
+          <stop offset="0%" stop-color="#ff4c87"/>
+          <stop offset="16%" stop-color="#ff938a"/>
+          <stop offset="32%" stop-color="#ffc114"/>
+          <stop offset="48%" stop-color="#fffd21"/>
+          <stop offset="64%" stop-color="#c9ff45"/>
+          <stop offset="80%" stop-color="#7eff5d"/>
+          <stop offset="100%" stop-color="#22ffbb"/>
+        </linearGradient>
+      </defs>
+
+      <text
+        x="50%"
+        y="50%"
+        dominant-baseline="middle"
+        text-anchor="middle"
+        fill="url(#${gradientId})"
+        font-size="22"
+        font-weight="800"
+        font-family="sans-serif"
+      >
+        ${value}
+      </text>
+    </svg>
+    `;
+
+    elementTotalFlareSKill.innerHTML = svg;
+  }
+
+  //各カテゴリーのデータ一覧取得
+  //レート値のリスト
+  //レート値のリスト
+  const categoryList = ["TOTAL", "CLASSIC", "WHITE", "GOLD"];
+
+  // TOTAL,CLASSIC,WHITE,GOLD
+  const counts = [[], [], [], []];
+
+  // =========================================
+  // 各カテゴリ集計
+  // =========================================
+  elementsUi.forEach((ui, i) => {
+    ui.querySelectorAll(".data").forEach((data) => {
+      // 3列目
+      const value = parseInt(data.children[2].textContent.trim(), 10);
+
+      // 個別カテゴリ
+      const found = counts[i + 1].find((row) => row[0] === value);
+
+      if (found) {
+        found[1] += 1;
+      } else {
+        counts[i + 1].push([value, 1]);
+      }
+
+      // TOTAL
+      const totalFound = counts[0].find((row) => row[0] === value);
+
+      if (totalFound) {
+        totalFound[1] += 1;
+      } else {
+        counts[0].push([value, 1]);
+      }
+    });
+  });
+
+  // 降順ソート
+  counts.forEach((list) => {
+    list.sort((a, b) => b[0] - a[0]);
+  });
+  // =========================================
+  // カテゴリーごとのレート
+  // =========================================
+
+  const sumList = Array(4).fill(0);
+
+  document.querySelectorAll(".skill-category-info").forEach((skillInfo, i) => {
+    const text = skillInfo.textContent;
+
+    const match = text.match(/(\d+)\s*\((\d+)\s*\/\s*\d+\)/);
+
+    if (match) {
+      const skillSum = parseFloat(match[1]);
+
+      sumList[i + 1] = skillSum;
+
+      const skillCount = parseFloat(match[2]);
+
+      const skillAve = (skillSum / skillCount).toFixed(2);
+
+      skillInfo.textContent = "合計:" + skillSum + ",平均:" + skillAve;
+    }
+  });
+
+  sumList[0] = sumList[1] + sumList[2] + sumList[3];
+
+  // =========================================
+  // Nextランク計算
+  // =========================================
+
+  const TotalColorNum = [
+    93000, 92000, 91000, 90000, 86250, 82500, 78750, 75000, 71250, 67500, 63750,
+    60000, 56250, 52500, 48750, 45000, 42250, 39500, 36750, 34000, 31500, 29000,
+    26500, 24000, 22000, 20000, 18000, 16000, 14500, 13000, 11500, 10000, 9000,
+    8000, 7000, 6000, 5000, 4000, 3000, 2000, 1500, 1000, 500, 0,
+  ];
+
+  let nextBorder = TotalColorNum[0];
+
+  for (let i = 0; i < TotalColorNum.length - 1; i++) {
+    if (sumList[0] < TotalColorNum[i] && sumList[0] >= TotalColorNum[i + 1]) {
+      nextBorder = TotalColorNum[i];
+      break;
+    }
+  }
+
+  // =========================================
+  // 偏り表作成
+  // =========================================
+
+  const table2 = document.createElement("table");
+
+  table2.classList.add("table-ui", "new_table-ui","table2");
+
+  const thead2 = document.createElement("thead");
+  const headTr2 = document.createElement("tr");
+
+  ["---", "合計", "バラツキ", "for Next"].forEach((text) => {
+    const th = document.createElement("th");
+
+    th.textContent = text;
+
+    headTr2.appendChild(th);
+  });
+
+  thead2.appendChild(headTr2);
+
+  table2.appendChild(thead2);
+
+  // =========================================
+  // tbody
+  // =========================================
+
+  const tbody2 = document.createElement("tbody");
+
+  categoryList.forEach((name, rowIndex) => {
+    const tr = document.createElement("tr");
+
+    // ------------------
+    // 名前
+    // ------------------
+
+    const tdName = document.createElement("td");
+
+    tdName.textContent = name;
+
+    tr.appendChild(tdName);
+
+    // ------------------
+    // 合計
+    // ------------------
+
+    const tdSum = document.createElement("td");
+
+    tdSum.textContent = sumList[rowIndex];
+
+    tr.appendChild(tdSum);
+
+    // ------------------
+    // バラツキ
+    // ------------------
+
+    const tdDiff = document.createElement("td");
+
+    if (rowIndex === 0) {
+      tdDiff.textContent = (sumList[0] / 3).toFixed(2);
+    } else {
+      tdDiff.textContent = (sumList[rowIndex] - sumList[0] / 3).toFixed(2);
+    }
+
+    tr.appendChild(tdDiff);
+
+    // ------------------
+    // for Next
+    // ------------------
+
+    const tdNext = document.createElement("td");
+
+    if (rowIndex === 0) {
+      tdNext.textContent = nextBorder;
+    } else {
+      tdNext.textContent = (sumList[rowIndex] - nextBorder / 3).toFixed(2);
+    }
+
+    tr.appendChild(tdNext);
+
+    tbody2.appendChild(tr);
+  });
+
+  table2.appendChild(tbody2);
+
+  // =========================================
+  // 色設定
+  // =========================================
+
+  const rows2 = tbody2.children;
+
+  rows2[1]?.classList.add("theme-classic");
+  rows2[2]?.classList.add("theme-white");
+  rows2[3]?.classList.add("theme-gold");
+
+  // =========================================
+  // 挿入
+  // =========================================
+
+  elementAnalyze.appendChild(table2);
+
+  // =========================================
+  // 統計表作成
+  // =========================================
+  // 最大列数
+  //無限に要素分全部表示もできる
+  //const maxLength = Math.max(...counts.map(arr => arr.length));
+  const maxLength = 5;
+  // 共通横幅
+  const cellWidth = `calc(100% / ${maxLength + 1})`;
+  const labelWidth = `calc(100% / ${maxLength + 1})`;
+
+  const table = document.createElement("table");
+
+  table.classList.add("table-ui", "new_table-ui","table1");
+
+  // 最大列数
+  //無限に要素分全部表示もできる
+  //const maxLength = Math.max(...counts.map(arr => arr.length));
+  // =========================================
+  // thead
+  // =========================================
+  const thead = document.createElement("thead");
+
+  const headTr = document.createElement("tr");
+
+  // 左上
+  const emptyTh = document.createElement("th");
+
+  emptyTh.textContent = "レート順位";
+
+  emptyTh.style.minWidth = labelWidth;
+
+  emptyTh.style.whiteSpace = "nowrap";
+
+  headTr.appendChild(emptyTh);
+
+  // 1,2,3...
+  for (let i = 0; i < maxLength; i++) {
+    const th = document.createElement("th");
+
+    th.textContent = i + 1;
+
+    th.style.minWidth = cellWidth;
+
+    th.style.whiteSpace = "nowrap";
+
+    headTr.appendChild(th);
+  }
+
+  thead.appendChild(headTr);
+
+  table.appendChild(thead);
+
+  // =========================================
+  // tbody
+  // =========================================
+  const tbody = document.createElement("tbody");
+  const themeList = ["theme-classic", "theme-white", "theme-gold"];
+
+  counts.forEach((list, rowIndex) => {
+    const tr = document.createElement("tr");
+
+    // 行名
+    const labelTd = document.createElement("td");
+
+    labelTd.textContent = categoryList[rowIndex];
+
+    labelTd.style.minWidth = labelWidth;
+
+    labelTd.style.whiteSpace = "nowrap";
+
+    tr.appendChild(labelTd);
+
+    // 各データ
+    for (let i = 0; i < maxLength; i++) {
+      const td = document.createElement("td");
+
+      td.style.minWidth = cellWidth;
+
+      td.style.whiteSpace = "nowrap";
+
+      if (list[i]) {
+        td.textContent = `${list[i][0]}x ${list[i][1]}`;
+      } else {
+        td.textContent = "";
+      }
+
+      tr.appendChild(td);
+    }
+
+    tbody.appendChild(tr);
+  });
+
+  table.appendChild(tbody);
+  //色変え
+  const rows = tbody.children;
+
+  rows[1].classList.add("theme-classic");
+  rows[2].classList.add("theme-white");
+  rows[3].classList.add("theme-gold");
+  // elementAnalyze,new_analyze に追加
+  elementAnalyze.appendChild(table);
+  // =========================================
+  // カテゴリーごとのレート
+  // =========================================
+  document.querySelectorAll(".skill-category-info").forEach((skillInfo) => {
+    const text = skillInfo.textContent;
+
+    const match = text.match(/(\d+)\s*\((\d+)\s*\/\s*\d+\)/);
+
+    if (match) {
+      const skillSum = parseFloat(match[1]);
+
+      const skillCount = parseFloat(match[2]);
+
+      const skillAve = (skillSum / skillCount).toFixed(2);
+
+      skillInfo.textContent = "合計:" + skillSum + ",平均:" + skillAve;
+    }
+  });
+  requestAnimationFrame(() => {
+    requestAnimationFrame(() => {
+      document
+        .querySelectorAll(".new_table-ui th, .new_table-ui td")
+        .forEach(fitCell);
+    });
+  });
   // html2canvas 読み込み後に実行
+  // 新しいdiv作成
+
   loadHtml2Canvas(() => {
     convertDivToImage(".main-ui", "#ddr_main");
   });
