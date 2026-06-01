@@ -69,6 +69,7 @@ window.MakeFlareImage = function () {
     display:flex;
     justify-content:center;
     gap:4px;
+    margin-top:10px !important;
     margin-bottom:8px !important;
   }
   .analyzeChild1{
@@ -211,7 +212,12 @@ window.MakeFlareImage = function () {
 
     replaceUnsupportedColors();
 
-    html2canvas(target)
+    html2canvas(target, {
+      useCORS: true,
+      allowTaint: false,
+      imageTimeout: 15000,
+      logging: true,
+    })
       .then((canvas) => {
         const image = new Image();
 
@@ -238,7 +244,8 @@ window.MakeFlareImage = function () {
           const h = String(date.getHours()).padStart(2, "0");
           const minu = String(date.getMinutes()).padStart(2, "0");
 
-          const filename = "FlareList_"+Style+"_" + y + m + d + "_" + h + minu + ".png";    
+          const filename =
+            "FlareList_" + Style + "_" + y + m + d + "_" + h + minu + ".png";
 
           link.download = `${filename}.png`;
 
@@ -578,14 +585,16 @@ window.MakeFlareImage = function () {
 
   //worldデバッグ用=================================================================
   /*
-  document.querySelectorAll(".rank-9").forEach(el=>{
+  document.querySelector(".flare-rank").src="/game/ddr/ddrworld/images/playdata/flareskill/icon/icon_10.png"
+  document.querySelectorAll(".rank-9").forEach((el) => {
     el.classList.remove("rank-9");
-    el.classList.add("rank-10")
+    el.classList.add("rank-10");
   });
-  document.querySelector(".total-flare-skill-value").textContent="93200";
+  document.querySelector(".total-flare-skill-value").textContent = "93200";
   */
   //worldデバッグ用=================================================================
   //WORLDの場合に星を挿入
+
   if (document.querySelector(".rank-10")) {
     const elementTotalFlareSKill = document.querySelector(
       ".total-flare-skill-value",
@@ -606,8 +615,10 @@ window.MakeFlareImage = function () {
     for (let i = 0; i < worldRank; i++) {
       const img = document.createElement("img");
       img.classList.add("icon", "star");
+      img.crossOrigin = "anonymous";
+      //img.src ="https://raw.githubusercontent.com/Maruhati3/DDR_WORLD_FlareImage/main/Image/star_10.png";
       img.src =
-        "https://raw.githubusercontent.com/Maruhati3/DDR_WORLD_FlareImage/main/Image/star_10.png";
+        "https://cdn.jsdelivr.net/gh/Maruhati3/DDR_WORLD_FlareImage/Image/star_10.png";
       elementStarBox.appendChild(img);
     }
     //グラデーションの為にsvg作成
@@ -651,6 +662,8 @@ window.MakeFlareImage = function () {
     `;
 
     elementTotalFlareSKill.innerHTML = svg;
+    elementTotalFlareSKill.classList.remove("total-flare-skill-value");
+    elementTotalFlareSKill.style = "padding: 4px 0;";
   }
 
   //各カテゴリーのデータ一覧取得
@@ -745,7 +758,7 @@ window.MakeFlareImage = function () {
 
   const table2 = document.createElement("table");
 
-  table2.classList.add("table-ui", "new_table-ui","table2");
+  table2.classList.add("table-ui", "new_table-ui", "table2");
 
   const thead2 = document.createElement("thead");
   const headTr2 = document.createElement("tr");
@@ -853,7 +866,7 @@ window.MakeFlareImage = function () {
 
   const table = document.createElement("table");
 
-  table.classList.add("table-ui", "new_table-ui","table1");
+  table.classList.add("table-ui", "new_table-ui", "table1");
 
   // 最大列数
   //無限に要素分全部表示もできる
