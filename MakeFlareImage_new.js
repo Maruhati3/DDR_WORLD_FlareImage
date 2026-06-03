@@ -88,22 +88,23 @@ window.MakeFlareImage = function () {
     background-color: rgb(252 252 252) !important;
   }
   .table1{
-    width:15%;
-    max-width:15%;
+    width:600px !important;
+    max-width:600px !important;
   }
   .table2{
     width:60%;
-    max-width:60%;
+    max-width:500px !important;
   }
   .new_table-ui{
     border: 1px solid lightgray !important;
     border-radius: 6px;
     overflow: hidden;
     border-collapse: collapse;
+    margin: 0 !important;
   }
   .new_table-ui th,
   .new_table-ui td {
-    font-size: 1.8em;
+    font-size: 1.6em;
     font-weight: bold;
     overflow: hidden;
   }
@@ -883,8 +884,9 @@ window.MakeFlareImage = function () {
 
   emptyTh.textContent = "レート順位";
 
+  emptyTh.style.width = labelWidth;
   emptyTh.style.minWidth = labelWidth;
-
+  emptyTh.style.maxWidth = labelWidth;
   emptyTh.style.whiteSpace = "nowrap";
 
   headTr.appendChild(emptyTh);
@@ -896,7 +898,8 @@ window.MakeFlareImage = function () {
     th.textContent = i + 1;
 
     th.style.minWidth = cellWidth;
-
+    th.style.width = cellWidth;
+    th.style.maxWidth = cellWidth;
     th.style.whiteSpace = "nowrap";
 
     headTr.appendChild(th);
@@ -920,7 +923,9 @@ window.MakeFlareImage = function () {
 
     labelTd.textContent = categoryList[rowIndex];
 
-    labelTd.style.minWidth = labelWidth;
+    emptyTh.style.width = labelWidth;
+    emptyTh.style.minWidth = labelWidth;
+    emptyTh.style.maxWidth = labelWidth;
 
     labelTd.style.whiteSpace = "nowrap";
 
@@ -931,7 +936,8 @@ window.MakeFlareImage = function () {
       const td = document.createElement("td");
 
       td.style.minWidth = cellWidth;
-
+      td.style.width = cellWidth;
+      td.style.maxWidth = cellWidth;
       td.style.whiteSpace = "nowrap";
 
       if (list[i]) {
@@ -973,6 +979,10 @@ window.MakeFlareImage = function () {
       skillInfo.textContent = "合計:" + skillSum + ",平均:" + skillAve;
     }
   });
+
+  //改めてtable1の文字列をチェック
+  table.style.tableLayout = "fixed";
+  document.querySelectorAll(".table1 th, .table1 td").forEach(fitCell);
   requestAnimationFrame(() => {
     requestAnimationFrame(() => {
       document
@@ -980,6 +990,16 @@ window.MakeFlareImage = function () {
         .forEach(fitCell);
     });
   });
+  table2.style.tableLayout = "fixed";
+  const widths2 = ["25%", "25%", "25%", "25%"];
+
+  table2.querySelectorAll("tr").forEach((tr) => {
+    [...tr.children].forEach((cell, i) => {
+      cell.style.width = widths2[i];
+      cell.style.maxWidth = widths2[i];
+    });
+  });
+
   // html2canvas 読み込み後に実行
   // 新しいdiv作成
 
