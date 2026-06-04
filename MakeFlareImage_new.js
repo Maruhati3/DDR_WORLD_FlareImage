@@ -246,7 +246,7 @@ window.MakeFlareImage = function () {
           const minu = String(date.getMinutes()).padStart(2, "0");
 
           const filename =
-            "FlareList_" + Style + "_" + y + m + d + "_" + h + minu + ".png";
+            "FlareList_" + Style + "_" + y + m + d + "_" + h + minu ;
 
           link.download = `${filename}.png`;
 
