@@ -374,6 +374,18 @@ window.MakeFlareImage = function () {
   });
   //ddr_rightが枠幅を削るので属性を削除
   //document.querySelector('#ddr_right').id='';
+  
+  
+  //細身になるコンテンツの削除
+  const targetEl = document.querySelector('#ddr_right .game_inner');
+    
+    // 要素が存在する場合のみスタイルを上書き（無効化）
+    if (targetEl) {
+        targetEl.style.setProperty('width', 'auto', 'important');
+        targetEl.style.setProperty('max-width', 'none', 'important');
+        targetEl.style.setProperty('margin', '0', 'important');
+    }
+
 
   //divtabをstyle表示の横に追加しDancerNameを表示する。
   elementStyleTab = document.querySelector(".style-tab");
